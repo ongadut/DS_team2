@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from catboost import Pool
-from sklearn.metrics import roc_auc_score,accuracy_score,f1_score
+from sklearn.metrics import roc_auc_score,accuracy_score,f1_score,roc_curve,precision_recall_curve
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score, train_test_split
@@ -194,7 +194,7 @@ if selected == 'Prediction':
     st.title('Prediction scores for model')
     option = st.selectbox(
     "Select model",
-    ("RandomForest", "BernoulliNB",'LogisticRegression', "Catboost"))
+    ("RandomForest", 'GaussianNB',"BernoulliNB",'LogisticRegression', "Catboost"))
 if option == 'RandomForest':
     st.write('RandomForest feature:\n',full_set.columns[1:6])
     st.write('#RandomForest parametars:\n','\nn_estimators: 500\n','\nmax_depth: 5\n')
@@ -270,6 +270,25 @@ if option == 'BernoulliNB':
     st.write(f"Accuracy: {accuracy:.3f}")
     st.write(f"F1-Score: {f1:.3f}")
     st.write(f'AUC score: {auc:.3f}')
+
+    gnb = pickle.load(open('GaussianNB.sav', 'rb'))
+    y_pred_gnb = gnb.predict(X_test)
+
+    Y_gnb_score = gnb.predict_proba(X_test)
+    Y_bnb_score = bnb.predict_proba(X_test_ber)
+    
+    fpr_gnb, tpr_gnb, thresholds_gnb = roc_curve(y_test, Y_gnb_score[:, 1])
+    fpr_bnb, tpr_bnb, thresholds_bnb = roc_curve(y_test, Y_bnb_score[:, 1])
+
+    plt.title('Comparison of GaussianNB and BernoulliNB')
+    plt.plot(fpr_gnb,tpr_gnb)
+    plt.plot(fpr_bnb,tpr_bnb)
+    plt.ylabel('True Positive Rate')
+    plt.xlabel('False Positive Rate')
+
+    st.pyplot(plt)
+
+
     
 if option == 'LogisticRegression':
     st.write('Data is splited Train : 80% Test: 20%')
@@ -291,6 +310,37 @@ if option == 'LogisticRegression':
     st.write(f"Accuracy: {accuracy:.3f}")
     st.write(f"F1-Score: {f1:.3f}")
     st.write(f'AUC score: {auc:.3f}')
+
+    precision, recall, _= precision_recall_curve(y_test, y_pred_log)
+    plt.figure(figsize=(8, 6))
+    plt.plot(recall, precision, color='blue', lw=2, label='PR curve (area = %0.2f)' % auc)
+    plt.xlabel('Recall')
+    plt.ylabel('Precision')
+    plt.title('Precision-Recall Curve')
+    plt.legend(loc='lower left')
+    plt.grid(True)
+    st.pyplot(plt)
+
+
+
+if option  == 'GaussianNB':
+    st.write('Data is splited Train : 80% Test: 20%')
+    st.write('GaussianNB feature:',full_set_FligthTime.columns[1:-1])
+    st.write('GaussianNB parametars: var_smoothing=0.00000008')
+    X = full_set_FligthTime.drop(columns=['Parkinsons', 'ID'], axis=1)
+    y = full_set_FligthTime['Parkinsons']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    gnb = pickle.load(open('GaussianNB.sav', 'rb'))
+    y_pred_gnb = gnb.predict(X_test)
+    auc = roc_auc_score(y_test,y_pred_gnb )
+    accuracy = accuracy_score(y_test, y_pred_gnb)
+    f1 = f1_score(y_test, y_pred_gnb, average='weighted')
+    st.write(f"Accuracy: {accuracy:.3f}")
+    st.write(f"F1-Score: {f1:.3f}")
+    st.write(f'AUC score: {auc:.3f}')
+
+    
 
 
 
