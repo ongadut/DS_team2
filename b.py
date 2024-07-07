@@ -31,9 +31,9 @@ df_keys = pd.read_csv(path_keys)
 # path_full_set = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-2]
 # full_set = pd.read_csv(path_full_set)
 
-# url_full_set_LDA = 'https://drive.google.com/file/d/15nu6jSThQH7D7-rar83NrDofpBGAJJ4M/view?usp=sharing'
-# path_full_set_LDA = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-1]
-# full_set_LDA = pd.read_csv(path_full_set_LDA)
+url_full_set_LDA = 'https://drive.google.com/file/d/15nu6jSThQH7D7-rar83NrDofpBGAJJ4M/view?usp=sharing'
+path_full_set_LDA = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-2]
+full_set_LDA = pd.read_csv(path_full_set_LDA)
 
 # url_full_set_FligthTime = 'https://drive.google.com/file/d/1mTa8ZNRuXclVeBoORF0L8VbrEdpS8WIg/view?usp=sharing'
 # path_full_set_FligthTime = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-1]
@@ -43,7 +43,7 @@ df_keys = pd.read_csv(path_keys)
 df_user = pd.read_csv('df_user.csv')
 # df_keys = pd.read_csv('df_keys.csv')
 full_set = pd.read_csv('full_set.csv')
-full_set_LDA = pd.read_csv('full_set_LDA.csv')
+# full_set_LDA = pd.read_csv('full_set_LDA.csv')
 full_set_FligthTime = pd.read_csv('full_set_FligthTime.csv')
 
 full_set1 = pd.merge(full_set, df_user, on='ID', how='inner')
