@@ -1,11 +1,11 @@
 from click import option
-import streamlit as st
+import streamlit  as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from catboost import Pool
-from sklearn.metrics import roc_auc_score,accuracy_score,f1_score,roc_curve,precision_recall_curve
+from sklearn.metrics import roc_auc_score,accuracy_score,f1_score,roc_curve,precision_recall_curve,confusion_matrix
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score, train_test_split
@@ -19,8 +19,29 @@ import shap
 import warnings
 warnings.filterwarnings("ignore")
 
+# url_user = 'https://drive.google.com/file/d/1P2ORsfU2t8DVmFoR0KnHb40jjJRcYvEs/view?usp=sharing'
+# path_user = 'https://drive.google.com/uc?export=download&id='+url_user.split('/')[-2]
+# df_user = pd.read_csv(path_user)
+
+url_keys = 'https://drive.google.com/file/d/1ylRj68bdFJelLwE00iz_FtmBzgBCikNQ/view?usp=sharing'
+path_keys = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-2]
+df_keys = pd.read_csv(path_keys)
+
+# url_full_set = 'https://drive.google.com/file/d/1FBTIWCVoDObKTtqQ3TdwMqgAwwQIDOX1/view?usp=sharing'
+# path_full_set = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-2]
+# full_set = pd.read_csv(path_full_set)
+
+# url_full_set_LDA = 'https://drive.google.com/file/d/15nu6jSThQH7D7-rar83NrDofpBGAJJ4M/view?usp=sharing'
+# path_full_set_LDA = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-1]
+# full_set_LDA = pd.read_csv(path_full_set_LDA)
+
+# url_full_set_FligthTime = 'https://drive.google.com/file/d/1mTa8ZNRuXclVeBoORF0L8VbrEdpS8WIg/view?usp=sharing'
+# path_full_set_FligthTime = 'https://drive.google.com/uc?export=download&id='+url_keys.split('/')[-1]
+# full_set_FligthTime = pd.read_csv(path_full_set_FligthTime)
+
+
 df_user = pd.read_csv('df_user.csv')
-df_keys = pd.read_csv('df_keys.csv')
+# df_keys = pd.read_csv('df_keys.csv')
 full_set = pd.read_csv('full_set.csv')
 full_set_LDA = pd.read_csv('full_set_LDA.csv')
 full_set_FligthTime = pd.read_csv('full_set_FligthTime.csv')
@@ -340,7 +361,13 @@ if option  == 'GaussianNB':
     st.write(f"F1-Score: {f1:.3f}")
     st.write(f'AUC score: {auc:.3f}')
 
-    
+    confusion_matrix_GaussianNB = confusion_matrix(y_test, y_pred_gnb)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_matrix_GaussianNB, annot=True)
+    plt.ylabel('Actual Label')
+    plt.xlabel('Predicted Label')
+
+    st.pyplot(plt)
 
 
 
