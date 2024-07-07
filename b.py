@@ -184,6 +184,11 @@ if selected == 'Exploration Data':
     fig.tight_layout()
     st.pyplot(fig)
 
+    plt.figure(figsize= (16,8))
+    matrix = full_set_LDA.drop(['Parkinsons'], axis=1).corr()
+    sns.heatmap(matrix, cmap="BuPu", annot=True)
+    st.pyplot(plt)
+
 
 if selected == 'Prediction':
     st.title('Prediction scores for model')
