@@ -57,6 +57,7 @@ with st.sidebar:
         )
 
 if selected == 'Home':
+    st.image('sunrise.png', caption='Sunrise by the mountains')
     st.title("***Project - Detection of Parkinson’s disease with keystroke data*** ")
     st.write('The idea is to create an ML model that will detect whether a user has Parkinson’s Disease or not based on their keystroke data.') 
     st.write('**User data** (ArchivedUsers.zip): ***Contains text files with general and medical information for each user.***')
