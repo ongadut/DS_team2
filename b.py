@@ -236,7 +236,10 @@ if option == 'RandomForest':
     value = st.slider("Choose a user", 1, 80, 6)
     st_shap(shap.plots.waterfall(shap_values[value,:,0], max_display=10))
 if option == 'Catboost':
-    X_train, X_test, y_train, y_test = train_test_split(full_set_LDA.drop(columns=['Parkinsons']), full_set['Parkinsons'], test_size=0.2, random_state=42)
+    # X_train, X_test, y_train, y_test = train_test_split(full_set_LDA.drop(columns=['Parkinsons']), full_set['Parkinsons'], test_size=0.2, random_state=42)
+    X = full_set_LDA.drop(columns=['Parkinsons', 'ID'], axis=1)
+    y = full_set_LDA['Parkinsons']
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     lda_model = pickle.load(open('LDA_model.sav', 'rb'))
     st.write('Data is splited Train : 80% Test: 20%')
     st.write('For tunig the model use LDA(Linear discriminant analysis)') 
