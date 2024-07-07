@@ -43,7 +43,7 @@ df_keys = pd.read_csv(path_keys)
 df_user = pd.read_csv('df_user.csv')
 # df_keys = pd.read_csv('df_keys.csv')
 full_set = pd.read_csv('full_set.csv')
-Full_set_LDA = pd.read_csv('Full_set_LDA.csv')
+full_set_LDA = pd.read_csv('Full_set_LDA.csv')
 full_set_FligthTime = pd.read_csv('full_set_FligthTime.csv')
 
 full_set1 = pd.merge(full_set, df_user, on='ID', how='inner')
